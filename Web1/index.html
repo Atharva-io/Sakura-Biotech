@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Sakura Biotech builds controlled cultivation systems for algae, mushrooms, and plants." />
+  <title>Sakura Biotech</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body id="top">
+  <div class="frame">
+    <header class="site-header" aria-label="Primary">
+      <nav class="nav">
+        <a class="nav__logo" href="#home" aria-label="Sakura Biotech home">
+          <!-- Logo path: Assessts/Home page/logo.png -->
+          <img class="logo__img" src="Assessts/Home%20page/logo.png" alt="" aria-hidden="true" />
+          <!-- Replace brand name if needed -->
+          Sakura Biotech
+        </a>
+
+        <button class="nav__toggle" aria-controls="navMenu" aria-expanded="false" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav__links" id="navMenu">
+          <a href="#home">Home</a>
+          <a href="#algae">Algae</a>
+          <a href="#mushroom">Mushroom</a>
+          <a href="#plant">Plants</a>
+          <button class="theme-toggle" type="button" id="themeToggle" aria-label="Toggle theme">Theme</button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="site-main">
+      <!-- Home / Landing (full-screen) -->
+      <section class="home" id="home" aria-label="Sakura Biotech systems">
+        <div class="home__panel" aria-label="Systems panel">
+          <!-- Background videos (replace src files with your own). -->
+          <div class="home__bgLayers" aria-hidden="true">
+            <!-- Replace file: Assessts/Home page/algae.mp4 -->
+            <video class="home__bgVideo home__bgVideo--algae" autoplay muted loop playsinline webkit-playsinline preload="metadata">
+              <source src="Assessts/Home%20page/algae.mp4" type="video/mp4" />
+            </video>
+            <!-- Replace file: Assessts/Home page/Mushroom.mp4 -->
+            <video class="home__bgVideo home__bgVideo--mushroom" autoplay muted loop playsinline webkit-playsinline preload="metadata">
+              <source src="Assessts/Home%20page/Mushroom.mp4" type="video/mp4" />
+            </video>
+          </div>
+
+          <span class="home__dividers" aria-hidden="true"></span>
+
+          <!-- Replace text as needed -->
+          <a class="home__item" data-panel="algae" href="#algae" aria-label="Algae system">
+            <h2>Algae</h2>
+            <p class="home__subtitle">AI Enabled Bioreactor</p>
+          </a>
+
+          <a class="home__item" data-panel="mushroom" href="#mushroom" aria-label="Mushroom system">
+            <h2>Mushroom</h2>
+            <p class="home__subtitle">Mushroom Grow Box</p>
+          </a>
+
+          <a class="home__item" data-panel="plant" href="#plant" aria-label="Plants system">
+            <h2>Plants</h2>
+            <p class="home__subtitle">Hydroponics</p>
+          </a>
+        </div>
+      </section>
+
+      <!-- Algae (Detail section under the 3 panels) -->
+      <section class="detail detail--algae detail--full" id="algae" aria-label="Algae - AI-Enabled Photobioreactor">
+        <div class="detail__inner">
+          <!-- Big placeholder block (matches your mock). Replace with a real image later. -->
+          <div class="detail__banner detail__banner--full" role="img" aria-label="Algae product image placeholder">
+            <div class="detail__bannerInner">
+              <h2>Algae</h2>
+              <p class="detail__bannerSub">AI-Enabled Photobioreactor</p>
+            </div>
+          </div>
+
+          <div class="detail__intro">
+            <h3>AI-Enabled Algae Bioreactor for Consistent, Scalable Cultivation</h3>
+            <p>Automate cultivation, reduce variability, and generate actionable data so every batch is measurable and repeatable.</p>
+          </div>
+
+          <div class="metrics" aria-label="Algae highlights">
+            <span class="metrics__item">Live Monitoring</span>
+            <span class="metrics__dot" aria-hidden="true"></span>
+            <span class="metrics__item">Recipe Control</span>
+            <span class="metrics__dot" aria-hidden="true"></span>
+            <span class="metrics__item">Batch Reports</span>
+            <span class="metrics__dot" aria-hidden="true"></span>
+            <span class="metrics__item">Alerts</span>
+            <span class="metrics__dot" aria-hidden="true"></span>
+            <span class="metrics__item">Multi-Tank View</span>
+          </div>
+
+          <!-- 7 content boxes -->
+          <div class="detail__grid" aria-label="Algae details">
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">01</span>
+              <h4>What it is</h4>
+              <p>A sensor-driven photobioreactor (PBR) designed to grow microalgae in a controlled, contamination-aware environment.</p>
+              <p>It combines robust cultivation hardware with software + AI insights to improve reliability and productivity whether you're running R&amp;D, pilot production, or multi-tank distributed nodes.</p>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">02</span>
+              <h4>What you can do with it</h4>
+              <ul class="detail__list">
+                <li><strong>R&amp;D and Strain Screening:</strong> Compare light recipes, nutrient strategies, and CO<sub>2</sub> regimes faster without guesswork.</li>
+                <li><strong>Biomass / Lipids / Pigments Production:</strong> Run consistent cycles and identify the parameters that drive yield.</li>
+                <li><strong>Carbon Utilization Experiments:</strong> Measure the effect of CO<sub>2</sub> dosing on growth performance and stability.</li>
+                <li><strong>Education &amp; Training:</strong> A complete data-first platform for hands-on algae cultivation and process learning.</li>
+              </ul>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">03</span>
+              <h4>Why teams choose this system</h4>
+              <ul class="detail__list">
+                <li><strong>Stable Control:</strong> Maintain temperature, pH/EC (if used), DO/CO<sub>2</sub>, light intensity, and mixing within target bands.</li>
+                <li><strong>Repeatable Batches:</strong> Standardized recipes + logs reduce dependence on manual operator routines.</li>
+                <li><strong>Faster Learning:</strong> Clear trends and event timelines show why a batch performed well or poorly.</li>
+                <li><strong>Scale by Replication:</strong> Add more tanks/nodes without losing visibility, control, or traceability.</li>
+              </ul>
+            </article>
+
+            <article class="detail__card detail__card--wide">
+              <span class="detail__badge" aria-hidden="true">04</span>
+              <h4>Core system modules</h4>
+              <ol class="detail__list detail__list--ordered">
+                <li><strong>Cultivation Hardware:</strong> Reactor/tank geometry optimized for light delivery and mixing; gas exchange + CO<sub>2</sub> dosing options; harvest-friendly plumbing and modular expansion.</li>
+                <li><strong>Lighting &amp; Photoperiod Control:</strong> Programmable photoperiod schedules; intensity control and saved light recipes; strain-specific modes (growth vs. target compounds).</li>
+                <li><strong>Sensor Stack (Configurable):</strong> Temperature, pH/EC (when relevant), DO, CO<sub>2</sub>, ORP, light intensity, and more; data validation + alerts for drift, outliers, or sensor failure.</li>
+                <li><strong>Automation &amp; Control:</strong> Closed-loop or rule-based actuator control (mixing, aeration, CO<sub>2</sub>, dosing); fail-safes, thresholds, and event logging; manual override with safe operating limits.</li>
+                <li><strong>Data Platform &amp; AI Insights:</strong> Live dashboard + batch history; trend graphs, alarms, and recipe-to-outcome comparisons; optional predictive analytics for early instability detection.</li>
+              </ol>
+            </article>
+
+            <article class="detail__card detail__card--wide">
+              <span class="detail__badge" aria-hidden="true">05</span>
+              <h4>How it works</h4>
+              <ol class="detail__list detail__list--ordered">
+                <li><strong>Configure a recipe:</strong> Set light schedule, setpoints, control limits, and operating rules.</li>
+                <li><strong>Run a batch:</strong> Sensors stream data continuously and the system logs key events.</li>
+                <li><strong>Monitor &amp; optimize:</strong> Alerts and trends highlight drift, instability, or unusual behavior early.</li>
+                <li><strong>Harvest &amp; review:</strong> Automated batch reports summarize performance drivers and key changes.</li>
+                <li><strong>Improve next cycle:</strong> Refine recipes based on measured results and repeat with confidence.</li>
+              </ol>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">06</span>
+              <h4>Who it's for</h4>
+              <ul class="detail__list">
+                <li>Microalgae startups and pilot plants</li>
+                <li>Research labs and universities</li>
+                <li>Aquafeed / biofertilizer / bioactive ingredient teams</li>
+                <li>Carbon utilization and climate-tech experiments</li>
+              </ul>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">07</span>
+              <h4>What you can track</h4>
+              <ul class="detail__list">
+                <li>Growth stability (day-to-day consistency)</li>
+                <li>Yield per batch and per unit energy</li>
+                <li>Impact of light recipes and CO<sub>2</sub> dosing strategies</li>
+                <li>Contamination signals (early warning indicators)</li>
+                <li>Process repeatability across multiple tanks/nodes</li>
+              </ul>
+            </article>
+          </div>
+
+          <!-- Final CTA + FAQ removed per request -->
+        </div>
+      </section>
+
+      <!-- Mushroom (Detail section) -->
+      <section class="detail detail--mushroom detail--full" id="mushroom" aria-label="Mushroom Grow Box">
+        <div class="detail__inner">
+          <div class="detail__banner detail__banner--full detail__banner--spline" role="group" aria-label="Mushroom hero">
+            <!-- Replace the `src` URL with your own Spline scene link -->
+            <div class="detail__media detail__media--spline" aria-hidden="true">
+              <iframe
+                class="detail__spline"
+                title="Interactive mushroom 3D model"
+                src="https://my.spline.design/mushrooom-FbrRWWsv6WrvosqzjGyBz3aL/"
+                loading="lazy"
+                allow="autoplay; fullscreen"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+            <div class="detail__bannerInner">
+              <h2>Mushroom</h2>
+              <p class="detail__bannerSub">Mushroom Grow Box</p>
+            </div>
+          </div>
+
+          <div class="detail__intro">
+            <h3>Mushroom Grow Box for Consistent, Clean Harvests</h3>
+            <p>A compact controlled environment that stabilizes humidity, temperature, and fresh-air exchange so your grows are repeatable with less daily effort.</p>
+          </div>
+
+          <div class="metrics" aria-label="Mushroom highlights">
+            <span class="metrics__item">Stable Humidity</span>
+            <span class="metrics__dot" aria-hidden="true"></span>
+            <span class="metrics__item">CO<sub>2</sub> / Fresh-Air Control</span>
+            <span class="metrics__dot" aria-hidden="true"></span>
+            <span class="metrics__item">Clean Design</span>
+            <span class="metrics__dot" aria-hidden="true"></span>
+            <span class="metrics__item">Scalable Boxes</span>
+          </div>
+
+          <div class="detail__grid" aria-label="Mushroom details">
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">01</span>
+              <h4>What it is</h4>
+              <p>A smart mushroom grow box that creates a reliable microclimate for legal gourmet and medicinal mushrooms.</p>
+              <p>It combines controlled airflow, humidity management, and monitoring to reduce the most common causes of failed or inconsistent grows.</p>
+              <p>(Designed for legal cultivation only - culinary and medicinal species.)</p>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">02</span>
+              <h4>What you can do with it</h4>
+              <ul class="detail__list">
+                <li><strong>Home &amp; Hobby Growing:</strong> Grow consistently without constantly checking conditions or misting all day.</li>
+                <li><strong>Small-Scale Production:</strong> Run repeatable cycles to supply kitchens, cafes, and local customers.</li>
+                <li><strong>R&amp;D and Strain Trials:</strong> Compare substrates, spawn rates, or environmental recipes in a controlled setup.</li>
+                <li><strong>Training &amp; Education:</strong> A simple, visible system to learn cultivation fundamentals with real data.</li>
+              </ul>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">03</span>
+              <h4>Why growers choose this system</h4>
+              <ul class="detail__list">
+                <li><strong>Stable Humidity (without over-wetting):</strong> Maintain target RH and reduce pooling, soggy blocks, and contamination risk.</li>
+                <li><strong>Fresh-Air Exchange &amp; CO<sub>2</sub> Management:</strong> Avoid long-stem and low-quality fruiting caused by CO<sub>2</sub> buildup.</li>
+                <li><strong>Repeatable Results:</strong> Save and follow stable routines so outcomes do not depend on constant manual effort.</li>
+                <li><strong>Clean, Practical Design:</strong> Easy-to-wipe surfaces and organized airflow help maintain hygiene and reduce failure points.</li>
+              </ul>
+            </article>
+
+            <article class="detail__card detail__card--wide">
+              <span class="detail__badge" aria-hidden="true">04</span>
+              <h4>Core system modules</h4>
+              <ol class="detail__list detail__list--ordered">
+                <li><strong>Grow Chamber (Box Design):</strong> Compact, sealed structure with controlled openings; layout designed for predictable airflow and uniform conditions; easy access for loading and unloading blocks or trays.</li>
+                <li><strong>Humidity Control:</strong> Maintains target RH with smart cycling; designed to reduce over-misting and wet spots; supports stable fruiting conditions.</li>
+                <li><strong>Airflow / Fresh-Air Exchange:</strong> Controlled intake and exhaust behavior to manage CO<sub>2</sub> and oxygen; supports different growth phases (colonization vs fruiting) through settings.</li>
+                <li><strong>Monitoring &amp; Alerts:</strong> Tracks key environmental conditions (temperature, humidity, optional CO<sub>2</sub>); alerts for out-of-range conditions; basic logs to learn what changes affected results.</li>
+                <li><strong>Recipe / Mode Settings (Optional):</strong> Simple modes for typical phases; repeatable settings for different species and seasons; manual override for full control.</li>
+              </ol>
+            </article>
+
+            <article class="detail__card detail__card--wide">
+              <span class="detail__badge" aria-hidden="true">05</span>
+              <h4>How it works</h4>
+              <ol class="detail__list detail__list--ordered">
+                <li><strong>Load your grow:</strong> Place your legal mushroom grow blocks or trays inside the chamber.</li>
+                <li><strong>Select a mode or settings:</strong> Choose target humidity, airflow, and temperature range for your species.</li>
+                <li><strong>System maintains the environment:</strong> Humidity and air exchange run automatically to keep conditions stable.</li>
+                <li><strong>Monitor and adjust:</strong> Use readings and alerts to fine-tune based on growth response.</li>
+                <li><strong>Harvest and repeat:</strong> Stable conditions give repeatable flushes and easier planning.</li>
+              </ol>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">06</span>
+              <h4>Who it's for</h4>
+              <ul class="detail__list">
+                <li>Beginners who want a simpler, more reliable setup</li>
+                <li>Home growers focused on consistent results</li>
+                <li>Small businesses producing gourmet mushrooms</li>
+                <li>Labs, educators, and training programs</li>
+                <li>Anyone who wants to reduce contamination and environmental guesswork</li>
+              </ul>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">07</span>
+              <h4>What you can track</h4>
+              <ul class="detail__list">
+                <li>Humidity stability over time (and how it impacts fruiting)</li>
+                <li>Temperature consistency during different seasons</li>
+                <li>CO<sub>2</sub> trends and fresh-air performance (if included)</li>
+                <li>Batch repeatability (flush timing and yield stability)</li>
+                <li>Failure reduction signals (drift alerts and instability periods)</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="final-cta">
+            <div class="final-cta__text">
+              <h4>Ready to grow gourmet mushrooms with stable conditions and less manual effort?</h4>
+              <p>Explore models or talk to us about your goals, space, and target species.</p>
+            </div>
+            <div class="final-cta__actions">
+              <a class="btn btn--primary" href="#contact">See Models</a>
+              <a class="btn btn--ghost" href="#contact">Talk to Us</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Plant (Detail section) -->
+      <section class="detail detail--plant detail--full" id="plant" aria-label="Hydroponics">
+        <div class="detail__inner">
+          <div class="detail__banner detail__banner--full detail__banner--spline" role="group" aria-label="Hydroponics hero">
+            <!-- Replace the `src` URL with your own Spline scene link -->
+            <div class="detail__media detail__media--spline" aria-hidden="true">
+              <iframe
+                class="detail__spline"
+                title="Interactive hydroponics 3D model"
+                src="https://my.spline.design/plantwithapot-UxqyNZ8hOTM0V5I7UADYgZnq/"
+                loading="lazy"
+                allow="autoplay; fullscreen"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+            <div class="detail__bannerInner">
+              <h2>Plant</h2>
+              <p class="detail__bannerSub">Hydroponics</p>
+            </div>
+          </div>
+
+          <div class="detail__intro">
+            <h3>Smart Hydroponics for Faster, Cleaner, More Consistent Growth</h3>
+            <p>A recirculating hydroponics system with monitoring and optional automation so your plants stay stable, your nutrients stay on-point, and your results are repeatable.</p>
+          </div>
+
+          <div class="metrics" aria-label="Hydroponics highlights">
+            <span class="metrics__item">pH/EC Monitoring</span>
+            <span class="metrics__dot" aria-hidden="true"></span>
+            <span class="metrics__item">Recirculating Reservoir</span>
+            <span class="metrics__dot" aria-hidden="true"></span>
+            <span class="metrics__item">Modular Expansion</span>
+            <span class="metrics__dot" aria-hidden="true"></span>
+            <span class="metrics__item">Automation-Ready</span>
+          </div>
+
+          <div class="detail__grid" aria-label="Hydroponics details">
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">01</span>
+              <h4>What it is</h4>
+              <p>A modular hydroponics platform designed for controlled, efficient plant cultivation without soil.</p>
+              <p>It delivers nutrients directly to the root zone using a clean recirculating system, supported by monitoring and optional dosing automation to keep your crop stable across seasons and batches.</p>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">02</span>
+              <h4>What you can do with it</h4>
+              <ul class="detail__list">
+                <li><strong>Home &amp; Indoor Growing:</strong> Grow herbs and leafy greens with less mess and more control than soil.</li>
+                <li><strong>Commercial Trials &amp; Small Production:</strong> Run consistent cycles for repeatable yield and predictable planning.</li>
+                <li><strong>Research &amp; Controlled Experiments:</strong> Test lighting, nutrient recipes, and environmental changes with measurable data.</li>
+                <li><strong>Nursery &amp; Propagation:</strong> Maintain stable conditions for seedlings and clones to improve survival and uniformity.</li>
+              </ul>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">03</span>
+              <h4>Why growers choose this system</h4>
+              <ul class="detail__list">
+                <li><strong>Precise Nutrient Control:</strong> Maintain optimal pH and EC ranges so plants absorb nutrients efficiently.</li>
+                <li><strong>Cleaner &amp; More Efficient:</strong> Recirculating design reduces water waste and avoids soil-borne variability.</li>
+                <li><strong>Repeatable Results:</strong> Log conditions and follow stable routines with less dependence on gut feel.</li>
+                <li><strong>Scales Easily:</strong> Add more grow sites or modules without redesigning your entire setup.</li>
+              </ul>
+            </article>
+
+            <article class="detail__card detail__card--wide">
+              <span class="detail__badge" aria-hidden="true">04</span>
+              <h4>Core system modules</h4>
+              <ol class="detail__list detail__list--ordered">
+                <li><strong>Grow Modules (Crop Layout):</strong> Configurable layouts (channels, buckets, or crop-specific designs); root-zone design focused on uniform delivery; modular add-ons for expanding capacity.</li>
+                <li><strong>Reservoir + Recirculation:</strong> Central reservoir with pump-driven circulation; stable flow design for consistent nutrient delivery; easy maintenance access for cleaning and refills.</li>
+                <li><strong>Monitoring Stack (Recommended):</strong> pH monitoring; EC/TDS monitoring; temperature monitoring; alerts for drift and out-of-range conditions.</li>
+                <li><strong>Dosing &amp; Automation (Optional):</strong> Rule-based or scheduled dosing; safety limits and manual override; event logs for traceability.</li>
+                <li><strong>Dashboard &amp; Data Logs:</strong> Live status view of key parameters; trends over time; batch comparison; exportable logs for reporting and analysis.</li>
+              </ol>
+            </article>
+
+            <article class="detail__card detail__card--wide">
+              <span class="detail__badge" aria-hidden="true">05</span>
+              <h4>How it works</h4>
+              <ol class="detail__list detail__list--ordered">
+                <li><strong>Choose your crop and layout:</strong> Select a system design based on plant type and available space.</li>
+                <li><strong>Prepare nutrient solution:</strong> Mix nutrients in the reservoir and set initial pH and EC targets.</li>
+                <li><strong>System circulates automatically:</strong> Nutrient solution is delivered and recirculated continuously or on a schedule.</li>
+                <li><strong>Monitor and stabilize:</strong> Sensors track drift and help you maintain optimal ranges consistently.</li>
+                <li><strong>Harvest and repeat:</strong> Stable conditions produce repeatable growth cycles and cleaner planning.</li>
+              </ol>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">06</span>
+              <h4>Who it's for</h4>
+              <ul class="detail__list">
+                <li>Home growers and indoor farming setups</li>
+                <li>Herb and leafy green production</li>
+                <li>Research labs and universities</li>
+                <li>Controlled-environment agriculture teams</li>
+                <li>Anyone who wants measurable, repeatable plant growth</li>
+              </ul>
+            </article>
+
+            <article class="detail__card">
+              <span class="detail__badge" aria-hidden="true">07</span>
+              <h4>What you can track</h4>
+              <ul class="detail__list">
+                <li>pH stability (drift over time)</li>
+                <li>EC/TDS stability (nutrient strength control)</li>
+                <li>Water usage and refill frequency</li>
+                <li>Growth cycle consistency across batches</li>
+                <li>Recipe performance (what nutrient strategy produced better results)</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="final-cta">
+            <div class="final-cta__text">
+              <h4>Want a hydroponics setup tailored to your space and crops?</h4>
+              <p>Explore system options or request a plan with layout and recommended monitoring.</p>
+            </div>
+            <div class="final-cta__actions">
+              <a class="btn btn--primary" href="#contact">Explore Systems</a>
+              <a class="btn btn--ghost" href="#contact">Request a Setup Plan</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Placeholder (so CTAs don't dead-end). Replace with your full Contact section later. -->
+      <section class="detail" id="contact" aria-label="Contact">
+        <div class="detail__inner">
+          <div class="detail__intro">
+            <h3>Contact</h3>
+            <p>UI-only placeholder for now. Tell me what fields you want here and I will wire up the form validation + success message.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

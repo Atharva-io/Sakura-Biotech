@@ -1,3 +1,6 @@
+// Enhanced animations and interactions for Sakura Biotech website
+
+// Existing functionality from original script.js
 const navToggle = document.querySelector('.nav__toggle');
 const navMenu = document.getElementById('navMenu');
 const navLinks = navMenu ? Array.from(navMenu.querySelectorAll('a[href^="#"]')) : [];
@@ -14,7 +17,7 @@ const applyTheme = (theme) => {
   const nextTheme = theme === 'dark' ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', nextTheme);
   if (themeToggle) {
-    themeToggle.textContent = nextTheme === 'dark' ? 'Light' : 'Dark';
+    themeToggle.textContent = nextTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
     themeToggle.setAttribute('aria-label', nextTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
   }
 };
@@ -70,7 +73,7 @@ const setHomeVideosPlaying = (shouldPlay) => {
     if (shouldPlay) {
       const promise = video.play();
       if (promise && typeof promise.catch === 'function') {
-        promise.catch(() => {});
+        promise.catch(() => { });
       }
     } else {
       video.pause();
@@ -92,8 +95,6 @@ if (homeSection && homeVideos.length && 'IntersectionObserver' in window) {
   setHomeVideosPlaying(true);
 }
 
-// Autoplay can still be blocked on some browsers unless the user interacts once.
-// This retries playback after the first user gesture.
 if (homeVideos.length) {
   const retryOnGesture = () => {
     setHomeVideosPlaying(true);
@@ -186,7 +187,7 @@ const desktopPanels = window.matchMedia('(min-width: 768px)');
 const parseCssAngle = (value) => {
   const raw = String(value || '').trim();
   if (!raw) return 0;
-  const match = raw.match(/-?\d*\.?\d+/);
+  const match = raw.match(/-?\\d*\\.?\\d+/);
   if (!match) return 0;
   const number = Number(match[0]);
   if (Number.isNaN(number)) return 0;
@@ -323,7 +324,6 @@ if (homePanel) {
 
 homeItems.forEach((item) => {
   const activate = () => setPanelActive(item.dataset.panel);
-
   item.addEventListener('focus', activate);
 });
 
@@ -332,3 +332,166 @@ if (homePanel) {
     setActiveFromHash();
   });
 }
+
+// ============================================
+// NEW ENHANCEMENTS FOR PREMIUM EXPERIENCE
+// ============================================
+
+// Scroll Reveal Animation
+const revealElements = () => {
+  const reveals = document.querySelectorAll('.reveal, .detail__card, .card');
+
+  if (!('IntersectionObserver' in window) || reducedMotion.matches) {
+    reveals.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  reveals.forEach(el => revealObserver.observe(el));
+};
+
+// Card Mouse Tracking for Glow Effect
+const setupCardTracking = () => {
+  const cards = document.querySelectorAll('.card, .detail__card');
+
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+      card.style.setProperty('--mouse-x', `${x}%`);
+      card.style.setProperty('--mouse-y', `${y}%`);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.removeProperty('--mouse-x');
+      card.style.removeProperty('--mouse-y');
+    });
+  });
+};
+
+// Smooth scroll with offset for sticky header
+const setupSmoothScroll = () => {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      if (href === '#' || href === '#top') return;
+
+      const targetEl = document.querySelector(href);
+      if (!targetEl) return;
+
+      e.preventDefault();
+      const headerHeight = header ? header.offsetHeight : 0;
+      const targetPosition = targetEl.offsetTop - headerHeight;
+
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+
+      // Update URL hash
+      setTimeout(() => {
+        history.pushState(null, null, href);
+        setActiveNavLink();
+      }, 100);
+    });
+  });
+};
+
+// Initialize all enhancements
+document.addEventListener('DOMContentLoaded', () => {
+  revealElements();
+  setupCardTracking();
+  setupSmoothScroll();
+});
+
+// Re-initialize on dynamic content
+window.addEventListener('load', () => {
+  revealElements();
+  setupCardTracking();
+});
+
+// ============================================
+// CORE SYSTEM MODULES - CLICK TO TOGGLE DETAILS
+// ============================================
+const setupModuleInteractions = () => {
+  const moduleNodes = document.querySelectorAll('.module-node');
+
+  if (!moduleNodes.length) return;
+
+  moduleNodes.forEach(node => {
+    // Add tabindex for keyboard accessibility
+    const circle = node.querySelector('.module-circle');
+    if (circle && !circle.hasAttribute('tabindex')) {
+      circle.setAttribute('tabindex', '0');
+      circle.setAttribute('role', 'button');
+      circle.setAttribute('aria-expanded', 'false');
+    }
+
+    // Click handler (for touch devices)
+    node.addEventListener('click', (e) => {
+      e.stopPropagation();
+
+      // On desktop with mouse, hover handles it
+      // On touch/mobile, we toggle active state
+      const isTouch = !window.matchMedia('(hover: hover)').matches;
+
+      if (isTouch || window.innerWidth < 1024) {
+        const wasActive = node.classList.contains('is-active');
+
+        // Close all other modules first
+        moduleNodes.forEach(n => {
+          n.classList.remove('is-active');
+          const c = n.querySelector('.module-circle');
+          if (c) c.setAttribute('aria-expanded', 'false');
+        });
+
+        // Toggle this one
+        if (!wasActive) {
+          node.classList.add('is-active');
+          if (circle) circle.setAttribute('aria-expanded', 'true');
+        }
+      }
+    });
+
+    // Keyboard support
+    if (circle) {
+      circle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          node.click();
+        }
+        if (e.key === 'Escape') {
+          node.classList.remove('is-active');
+          circle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+  });
+
+  // Close modules when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.module-node')) {
+      moduleNodes.forEach(n => {
+        n.classList.remove('is-active');
+        const c = n.querySelector('.module-circle');
+        if (c) c.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+};
+
+// Initialize module interactions
+document.addEventListener('DOMContentLoaded', setupModuleInteractions);
+window.addEventListener('load', setupModuleInteractions);

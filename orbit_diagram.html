@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sakura Biotech - Interactive Core Systems</title>
+    <style>
+        /* 
+     * CONFIGURATION (CSS Variables) 
+     * Change colors, sizes, and fonts here.
+     */
+        :root {
+            --bg-color: #050505;
+            --text-color: #ffffff;
+            --accent-pink: #ff007f;
+            --accent-pink-glow: rgba(255, 0, 127, 0.6);
+            --accent-purple: #bd00ff;
+            --accent-purple-glow: rgba(189, 0, 255, 0.6);
+            --glass-panel: rgba(20, 20, 25, 0.9);
+            --border-color: rgba(255, 255, 255, 0.15);
+
+            --core-size: 180px;
+            --node-size: 110px;
+            --node-expanded-scale: 1.4;
+
+            --font-family: 'Inter', sans-serif;
+            /* Ensure you have a nice font linked or system font */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Controls to switch systems */
+        .system-selector {
+            position: absolute;
+            top: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .system-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .system-btn:hover,
+        .system-btn.active {
+            background: var(--accent-pink);
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 15px var(--accent-pink-glow);
+        }
+
+        /* ORBIT CONTAINER */
+        .orbit-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* SVG LINES LAYER */
+        .connections-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            /* Let clicks pass through */
+            z-index: 1;
+        }
+
+        .connector {
+            stroke: var(--accent-purple);
+            stroke-width: 2px;
+            stroke-opacity: 0.3;
+            filter: drop-shadow(0 0 2px var(--accent-purple));
+            transition: stroke-opacity 0.3s;
+        }
+
+        /* CORE CENTER */
+        .core {
+            position: absolute;
+            width: var(--core-size);
+            height: var(--core-size);
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #4a00e0, #2c0055);
+            box-shadow: 0 0 40px var(--accent-purple-glow), inset 0 0 20px rgba(255, 255, 255, 0.1);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .core h2 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(189, 0, 255, 0.8);
+        }
+
+        /* ORBIT NODES */
+        .node {
+            position: absolute;
+            width: var(--node-size);
+            height: var(--node-size);
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff00cc, #99004d);
+            box-shadow: 0 0 20px var(--accent-pink-glow), inset 0 0 10px rgba(255, 255, 255, 0.2);
+            z-index: 3;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            will-change: transform;
+            transform-style: preserve-3d;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            user-select: none;
+            transition: box-shadow 0.3s;
+        }
+
+        .node:hover {
+            box-shadow: 0 0 30px var(--accent-pink), inset 0 0 15px rgba(255, 255, 255, 0.4);
+            z-index: 10;
+            /* Bring to front on hover */
+        }
+
+        .node-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 0.2rem;
+        }
+
+        .node-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            line-height: 1.1;
+            max-width: 90%;
+        }
+
+        .node-subtitle {
+            font-size: 0.65rem;
+            opacity: 0.9;
+            margin-top: 2px;
+            font-style: italic;
+        }
+
+        /* FLOATING INFO PANEL */
+        .info-panel {
+            position: absolute;
+            width: 280px;
+            padding: 1.5rem;
+            background: var(--glass-panel);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(20px, -50%) scale(0.95);
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .info-panel.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(20px, -50%) scale(1);
+        }
+
+        /* Dynamic positioning of panel relative to node is handled in JS, 
+       but we can set a default "right side" anchor via transform. */
+
+        .info-header {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-pink);
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 300;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .info-list li::before {
+            content: '►';
+            position: absolute;
+            left: 0;
+            color: var(--accent-pink);
+            font-size: 0.6rem;
+            top: 0.4rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            :root {
+                --core-size: 110px;
+                --node-size: 80px;
+            }
+
+            .node-number {
+                font-size: 1.4rem;
+            }
+
+            .node-title {
+                font-size: 0.6rem;
+                display: none;
+                /* Hide title on small screens */
+            }
+
+            .node-number::after {
+                content: attr(data-label);
+                font-size: 0.6rem;
+                display: block;
+            }
+
+            .info-panel {
+                /* On mobile, show panel at bottom of screen instead of floating */
+                width: 90%;
+                bottom: 2rem;
+                left: 5% !important;
+                top: auto !important;
+                transform: translate(0, 20px) !important;
+            }
+
+            .info-panel.visible {
+                transform: translate(0, 0) !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- UI Controls -->
+    <div class="system-selector">
+        <button class="system-btn active" onclick="switchSystem('mushroom')">Mushroom</button>
+        <button class="system-btn" onclick="switchSystem('algae')">Algae</button>
+        <button class="system-btn" onclick="switchSystem('plant')">Plant</button>
+    </div>
+
+    <div class="orbit-container" id="orbitContainer">
+        <!-- SVG Lines -->
+        <svg class="connections-layer" id="connectionsSvg">
+            <!-- Lines will be injected by JS -->
+        </svg>
+
+        <!-- Core Center -->
+        <div class="core" id="core">
+            <h2>Core<br>System<br>Modules</h2>
+        </div>
+
+        <!-- Nodes will be injected by JS -->
+
+        <!-- Info Panel -->
+        <div class="info-panel" id="infoPanel">
+            <div class="info-header" id="panelHeader">Header</div>
+            <ul class="info-list" id="panelList"></ul>
+        </div>
+    </div>
+
+    <script>
+        /* 
+         * DATA DEFINITIONS 
+         */
+        const SYSTEMS = {
+            mushroom: [
+                { id: 1, number: "1", title: "Grow Chamber", subtitle: "(Box Design)", bullets: ["Compact, sealed structure", "Layout for predictable airflow", "Easy access for loading"] },
+                { id: 2, number: "2", title: "Humidity", subtitle: "Control", bullets: ["Maintains target RH with smart cycling", "Reduced over-misting and wet spots", "Stable fruiting conditions"] },
+                { id: 3, number: "3", title: "Airflow", subtitle: "& Exchange", bullets: ["Controlled intake/exhaust", "Manage CO2 buildup", "Uniform air distribution"] },
+                { id: 4, number: "4", title: "Monitoring", subtitle: "& Alerts", bullets: ["Tracks Temp, Humidity, CO2", "Alerts for out-of-range values", "Basic logs for analysis"] },
+                { id: 5, number: "5", title: "Recipe / Mode", subtitle: "Settings", bullets: ["Simple modes for different phases", "Repeatable settings per species", "Manual override control"] }
+            ],
+            algae: [
+                { id: 1, number: "1", title: "Cultivation", subtitle: "Hardware", bullets: ["Optimized reactor geometry", "Harvest-friendly plumbing", "Modular expansion"] },
+                { id: 2, number: "2", title: "Lighting", subtitle: "& Control", bullets: ["Programmable photoperiods", "Intensity control & recipes", "Strain-specific modes"] },
+                { id: 3, number: "3", title: "Sensor", subtitle: "Stack", bullets: ["Temp, pH, DO, ORP, Light", "Data validation & drift alerts", "Real-time outlier detection"] },
+                { id: 4, number: "4", title: "Automation", subtitle: "& Control", bullets: ["Closed-loop actuator control", "Fail-safes and event logging", "Safe operating limits"] },
+                { id: 5, number: "5", title: "Data Platform", subtitle: "& AI", bullets: ["Live dashboard + history", "Recipe-to-outcome comparison", "Predictive instability analytics"] }
+            ],
+            plant: [
+                { id: 1, number: "1", title: "Grow", subtitle: "Modules", bullets: ["Configurable crop layouts", "Uniform nutrient delivery", "Scalable modular add-ons"] },
+                { id: 2, number: "2", title: "Reservoir", subtitle: "& Recirculation", bullets: ["Pump-driven circulation", "Stable flow design", "Easy maintenance access"] },
+                { id: 3, number: "3", title: "Monitoring", subtitle: "Stack", bullets: ["pH, EC/TDS, Temperature", "Critical drift alerts", "Continuous data logging"] },
+                { id: 4, number: "4", title: "Dosing", subtitle: "& Automation", bullets: ["Rule-based nutrient dosing", "Safety limits & overrides", "Event traceability logs"] },
+                { id: 5, number: "5", title: "Dashboard", subtitle: "& Logs", bullets: ["Real-time system status", "Growth trends over time", "Exportable batch data"] }
+            ]
+        };
+
+        /* 
+         * CONFIGURATION 
+         */
+        const CONFIG = {
+            rotationSpeed: 0.002, // Radians per frame
+            reservedArc: 130 * (Math.PI / 180), // 130 degrees for selected node
+            hoverScale: 1.4,
+            normalScale: 1.0,
+            radiusFactor: 0.35, // r = min(w, h) * 0.35
+            dampening: 0.1, // Lerp factor for smooth movement (0.05 = slow, 0.2 = fast)
+        };
+
+        /* 
+         * STATE 
+         */
+        let state = {
+            system: 'mushroom',
+            nodes: [], // { element, data, currentAngle, targetAngle, scale, ... }
+            centerX: 0,
+            centerY: 0,
+            orbitRadius: 200,
+            baseRotation: 0,
+            isPaused: false,
+            selectedId: null,
+            lastFrameTime: 0
+        };
+
+        /* 
+         * DOM ELEMENTS 
+         */
+        const orbitContainer = document.getElementById('orbitContainer');
+        const connectionsSvg = document.getElementById('connectionsSvg');
+        const infoPanel = document.getElementById('infoPanel');
+        const panelHeader = document.getElementById('panelHeader');
+        const panelList = document.getElementById('panelList');
+
+        /* 
+         * INITIALIZATION 
+         */
+        function init() {
+            window.addEventListener('resize', handleResize);
+            handleResize(); // Set initial dimensions
+            switchSystem('mushroom'); // Load default
+            requestAnimationFrame(loop);
+        }
+
+        function handleResize() {
+            const w = orbitContainer.clientWidth;
+            const h = orbitContainer.clientHeight;
+            state.centerX = w / 2;
+            state.centerY = h / 2;
+            state.orbitRadius = Math.min(w, h) * CONFIG.radiusFactor;
+        }
+
+        function switchSystem(systemKey) {
+            if (!SYSTEMS[systemKey]) return;
+            state.system = systemKey;
+
+            // UI Update
+            document.querySelectorAll('.system-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.toLowerCase().includes(systemKey));
+            });
+
+            // Clear existing nodes
+            document.querySelectorAll('.node').forEach(n => n.remove());
+            while (connectionsSvg.firstChild) {
+                connectionsSvg.removeChild(connectionsSvg.firstChild);
+            }
+
+            const data = SYSTEMS[systemKey];
+            state.nodes = [];
+            const angleStep = (Math.PI * 2) / data.length;
+
+            data.forEach((item, index) => {
+                // Create DOM Node
+                const el = document.createElement('div');
+                el.className = 'node';
+                el.innerHTML = `
+          <div class="node-number" data-label="${item.title}">${item.number}</div>
+          <div class="node-title">${item.title}<br><span class="node-subtitle">${item.subtitle}</span></div>
+        `;
+
+                // Interaction Handlers
+                el.addEventListener('pointerenter', () => handleNodeHover(index));
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    handleNodeClick(index);
+                });
+
+                orbitContainer.appendChild(el);
+
+                // Create SVG Connector
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('class', 'connector');
+                connectionsSvg.appendChild(line);
+
+                // Init State for this node
+                state.nodes.push({
+                    index: index,
+                    data: item,
+                    element: el,
+                    line: line,
+                    currentAngle: index * angleStep, // Start distributed
+                    targetAngle: index * angleStep,
+                    scale: 1,
+                    targetScale: 1
+                });
+            });
+        }
+
+        /* 
+         * INTERACTION LOGIC
+         */
+        // Hover and Click behave similarly in this request: pause and expand
+        function handleNodeHover(index) {
+            state.isPaused = true;
+            state.selectedId = index;
+            updateTargetAngles(index);
+            updateInfoPanel(index);
+        }
+
+        function handleNodeClick(index) {
+            // Toggle logic if we wanted click-to-lock, but hover logic covers requirements
+            handleNodeHover(index);
+        }
+
+        // Clear selection when mouse leaves container or background click
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.node')) clearSelection();
+        });
+
+        // Optional: Mouse leave container to clear
+        // orbitContainer.addEventListener('mouseleave', clearSelection); 
+
+        function clearSelection() {
+            state.isPaused = false;
+            state.selectedId = null;
+            hideInfoPanel();
+
+            // Reset targets to even distribution
+            const step = (Math.PI * 2) / state.nodes.length;
+            state.nodes.forEach((node, i) => {
+                node.targetScale = CONFIG.normalScale;
+                // The target angle is relative to the *current* base rotation conceptually,
+                // but since we will resume rotation, we just need them to space out evenly.
+                // We calculate 'relative' target. The loop() adds baseRotation.
+            });
+        }
+
+        function updateTargetAngles(selectedIndex) {
+            if (selectedIndex === null) return;
+
+            const totalNodes = state.nodes.length;
+            const reserved = CONFIG.reservedArc;
+            const remainingArc = (Math.PI * 2) - reserved;
+            const gap = remainingArc / (totalNodes - 1);
+
+            // The selected node stays roughly where it is (or ideally moves to a good viewing angle?)
+            // Requirement: "Orbit resumes rotation from the same frozen angle".
+            // So we should build the layout *around* the selected node's current position.
+
+            const selectedNode = state.nodes[selectedIndex];
+            selectedNode.targetScale = CONFIG.hoverScale;
+
+            // We don't change the selected node's angle relative to the others, 
+            // we just push the others away.
+
+            // Let's define the "Target Layout" relative to the Selected Node at 0.
+            // Selected = 0
+            // Next = reserved/2 + gap*0
+            // ...
+
+            // Actually, we need to map the CURRENT order to the TARGET order to avoid crossing.
+
+            // Current angles are roughly: baseRotation + index*step
+            // We want to preserve that topology.
+
+            // Let's center the "Reserved Arc" on the selected node.
+            // Relative offset for selected = 0.
+            // Relative offset for others = distributed in the remaining space.
+
+            // We need to calculate the target offsets *relative to the selected node*.
+
+            state.nodes.forEach((node, i) => {
+                if (i === selectedIndex) {
+                    node.targetRelativeOffset = 0;
+                } else {
+                    // Find distance in indices (handling wrap-around)
+                    let diff = i - selectedIndex;
+                    if (diff < 0) diff += totalNodes; // 1 to 4
+
+                    // Map 1..4 to their positions
+                    // For 5 nodes, we have 4 others. 
+                    // We want them centered opposite to the selected node? 
+                    // Or just distributed evenly? user said "Distribute the other 4 nodes evenly across the remaining arc"
+
+                    // Let's place them starting from the edge of the reserved arc.
+                    // Start Angle = reserved/2
+                    // Step = gap
+                    // Angle = Start + (diff - 1) * gap + gap/2 (center in segment?)
+                    // Simpler: Just Start + (diff-1) * gap if we just want them effectively spanned.
+
+                    // Let's distribute them from [Reserved/2] to [2PI - Reserved/2]
+                    // Range = 2PI - Reserved
+                    // We have N-1 nodes.
+                    // Spacing = Range / (N-1) ?? Or Range / N ?
+                    // If we want them to fill the space, Gap = Range / (N-1).
+                    // But that puts the last one right at the edge.
+
+                    // Let's use Gap = Range / (N-1).
+                    // First neighbor at +Reserved/2
+                    // Second at +Reserved/2 + Gap
+                    // ... 
+
+                    // Wait, diff goes 1, 2, 3, 4.
+                    // But we want the "closest" neighbors to be pushed out.
+                    // If diff is 1 (immediate right), it should be at +Reserved/2.
+                    // If diff is 4 (immediate left), it should be at -Reserved/2.
+
+                    // Let's normalize diff to -2, -1, 1, 2 for 5 nodes.
+                    let centeredDiff = i - selectedIndex;
+                    if (centeredDiff > totalNodes / 2) centeredDiff -= totalNodes;
+                    if (centeredDiff < -totalNodes / 2) centeredDiff += totalNodes;
+
+                    // Now centeredDiff for 5 nodes:
+                    // if selected=0: 1->1, 2->2, 3->-2, 4->-1.
+
+                    // Warning: The order must strictly be preserved or lines cross.
+                    // We want 1 to be "after" 0, and 4 to be "before" 0.
+
+                    // Simple Mapping:
+                    // The "Available Space" starts at angle +Reserved/2 and ends at +2PI - Reserved/2.
+                    // We map indices 1, 2, 3, 4 into that linear space.
+
+                    // Let's use the 'diff' (1..4) from before.
+                    // Start = (reserved / 2)
+                    // Range = (Math.PI * 2) - reserved
+                    // We have 4 items. We want to place them in the center of 4 slots? 
+                    // Or spread vertex to vertex? 
+                    // Let's do center of slots: step = Range / 4.
+                    // Pos = Start + (diff - 0.5) * step.
+                    // This keeps 1 and 4 away from the "Reserved Edge" by half a step. 
+                    // Ensures breathing room.
+
+                    const step = remainingArc / (totalNodes - 1);
+                    // Actually, let's just place them evenly.
+                    // 1 should be at +Reserved/2 + margin?
+                    // Let's try: 
+                    // Angle = (Reserved/2) + (diff - 1) * step + (step/2 maybe?)
+                    // Let's stick to standard even distribution in remaining arc.
+                    const offset = (reserved / 2) + ((diff - 1) * step) + (step / 2);
+
+                    node.targetRelativeOffset = offset;
+                }
+            });
+        }
+
+        function updateInfoPanel(index) {
+            const node = state.nodes[index];
+            const data = node.data;
+
+            panelHeader.innerText = `${data.number}. ${data.title} ${data.subtitle}`;
+            panelList.innerHTML = data.bullets.map(b => `<li>${b}</li>`).join('');
+
+            // Position calculation in loop() for smooth tracking
+            infoPanel.classList.add('visible');
+        }
+
+        function hideInfoPanel() {
+            infoPanel.classList.remove('visible');
+        }
+
+        /* 
+         * ANIMATION LOOP 
+         */
+        function loop() {
+            // Update Base Rotation if not paused
+            if (!state.isPaused) {
+                state.baseRotation += CONFIG.rotationSpeed;
+            }
+
+            state.nodes.forEach((node, i) => {
+                // TARGET ANGLE CALCULATION
+                let targetTheta;
+
+                if (state.selectedId !== null) {
+                    // EXPANDED STATE
+                    // If we are node i, our target is:
+                    // SelectedNode.currentAngle + MyRelativeOffset
+                    const selectedNode = state.nodes[state.selectedId];
+
+                    // Use the selected node's FROZEN angle as the anchor
+                    // Note: selectedNode.currentAngle is frozen because we stopped incrementing baseRotation
+                    // but we need to be careful with modulo 2PI if we want shortest path.
+
+                    let anchor = selectedNode.currentAngle;
+                    targetTheta = anchor + (node.targetRelativeOffset || 0);
+
+                } else {
+                    // NORMAL STATE
+                    // Target is simply baseRotation + index distribution
+                    const distStep = (Math.PI * 2) / state.nodes.length;
+                    targetTheta = state.baseRotation + (i * distStep);
+                }
+
+                // INTERPOLATION (Lerp)
+                // Handle wrap-around for smooth lerp (e.g. 350 -> 10 degrees)
+                let diff = targetTheta - node.currentAngle;
+                while (diff < -Math.PI) diff += Math.PI * 2;
+                while (diff > Math.PI) diff -= Math.PI * 2;
+
+                node.currentAngle += diff * CONFIG.dampening;
+
+                // Scale Lerp
+                node.scale += (node.targetScale - node.scale) * CONFIG.dampening;
+
+                // CALCULATE POSITION
+                const x = state.centerX + Math.cos(node.currentAngle) * state.orbitRadius;
+                const y = state.centerY + Math.sin(node.currentAngle) * state.orbitRadius;
+
+                // UPDATE DOM
+                node.element.style.transform = `translate(${x - state.centerX}px, ${y - state.centerY}px) scale(${node.scale})`;
+
+                // Z-Index Hack: Selected always on top
+                node.element.style.zIndex = (i === state.selectedId) ? 100 : 10;
+
+                // UPDATE LINES
+                // SVG lines need absolute coordinates relative to the SVG container (0,0 is top-left)
+                // Core center is at state.centerX, state.centerY
+                // Node center is at x + nodeSize/2, y + nodeSize/2... wait.
+                // Transform translate is relative to the element's center if we set CSS?
+                // Node CSS: left: 50%, top: 50%, transform: translate(-50%, -50%)... wait, I didn't set that.
+                // My CSS for .node is absolute.
+                // Let's assume (0,0) of .node is top-left.
+                // To center it, I should have offset -nodeSize/2.
+                // Let's correct the loop calc:
+
+                // Correct Dom Position:
+                // center screen (state.centerX, state.centerY)
+                // plus vector (r cos, r sin)
+                // minus half size to center element
+                const offset = (node.scale * 110) / 2; // Approximate visual center depends on scale? 
+                // No, transform-origin is center. CSS handles scale from center.
+                // So just position center:
+                const nodeHalf = 55; // 110/2
+                const drawX = x - nodeHalf;
+                const drawY = y - nodeHalf;
+
+                node.element.style.left = `${state.centerX}px`;
+                node.element.style.top = `${state.centerY}px`;
+                node.element.style.transform = `translate(${x - state.centerX - nodeHalf}px, ${y - state.centerY - nodeHalf}px) scale(${node.scale})`;
+
+                // UPDATE CONNECTOR
+                node.line.setAttribute('x1', state.centerX);
+                node.line.setAttribute('y1', state.centerY);
+                node.line.setAttribute('x2', x);
+                node.line.setAttribute('y2', y);
+
+                // If selected, highlight line
+                if (state.selectedId === i) {
+                    node.line.style.strokeOpacity = 1;
+                    node.line.style.stroke = 'var(--accent-pink)';
+                } else {
+                    node.line.style.strokeOpacity = 0.3;
+                    node.line.style.stroke = 'var(--accent-purple)';
+                }
+
+                // UPDATE INFO PANEL POSITION (if selected)
+                if (state.selectedId === i) {
+                    // Place panel to the right of the node, unless near edge
+                    // Simple logic: x + radius.
+                    const panelX = x + 80;
+                    const panelY = y;
+                    infoPanel.style.left = `${panelX}px`;
+                    infoPanel.style.top = `${panelY}px`;
+                }
+            });
+
+            state.lastFrameTime = performance.now();
+            requestAnimationFrame(loop);
+        }
+
+        // Start
+        init();
+
+    </script>
+</body>
+
+</html>

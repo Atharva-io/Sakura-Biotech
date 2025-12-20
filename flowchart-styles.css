@@ -1,0 +1,866 @@
+/* ========================================= */
+/* FLOWCHART AND DIAGRAM STYLES */
+/* ========================================= */
+
+/* Section Title Styling */
+.section-title,
+.flowchart-title {
+    background: linear-gradient(90deg,
+            color-mix(in srgb, var(--color-text) 95%, transparent),
+            color-mix(in srgb, var(--color-text) 80%, transparent));
+    color: var(--color-bg);
+    font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+    font-weight: 700;
+    padding: 0.8rem 1.5rem;
+    margin: 2rem 0 1.5rem;
+    border-radius: var(--radius-sm);
+    text-align: left;
+}
+
+/*==================== INTERACTIVE CIRCULAR DIAGRAM ====================*/
+.system-modules {
+    margin: 3rem auto 4rem;
+    max-width: 100%;
+    padding: 2rem 1rem;
+    overflow: visible;
+}
+
+.modules-diagram {
+    position: relative;
+    width: 100%;
+    max-width: 650px;
+    min-height: 420px;
+    height: auto;
+    margin: 4rem auto 2rem;
+    /* Significantly increased top margin */
+    padding-top: 3rem;
+    /* Added internal padding */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Center Hub - Premium Glass Effect - COMPACT */
+.modules-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #7B2CBF, #9D4EDD, #C77DFF);
+    color: white;
+    font-weight: 900;
+    font-size: clamp(0.75rem, 1.2vw, 1rem);
+    text-align: center;
+    padding: clamp(1rem, 2vw, 1.5rem) clamp(1.2rem, 2.5vw, 2rem);
+    border-radius: 1.2rem;
+    box-shadow:
+        0 15px 40px rgba(123, 44, 191, 0.5),
+        0 0 50px rgba(157, 78, 221, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    z-index: 10;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    animation: centerGlow 4s ease-in-out infinite;
+}
+
+@keyframes centerGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 20px 60px rgba(123, 44, 191, 0.5),
+            0 0 60px rgba(157, 78, 221, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    50% {
+        box-shadow:
+            0 25px 80px rgba(123, 44, 191, 0.6),
+            0 0 100px rgba(157, 78, 221, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* Module Node Container */
+.module-node {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 5;
+    cursor: pointer;
+    transition: z-index 0s;
+}
+
+.module-node:hover,
+.module-node.is-active {
+    z-index: 20;
+}
+
+/* Module Circle - Beautiful Gradient - SMALLER */
+.module-circle {
+    background: linear-gradient(135deg, #FF1493 0%, #FF69B4 50%, #FF1493 100%);
+    color: white;
+    border-radius: 50%;
+    width: clamp(70px, 9vw, 90px);
+    height: clamp(70px, 9vw, 90px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 8px 30px rgba(255, 20, 147, 0.5),
+        0 0 20px rgba(255, 20, 147, 0.3),
+        inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    position: relative;
+    z-index: 3;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    animation: floatCircle 4s ease-in-out infinite;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Stagger animations for each module */
+.module-1 .module-circle {
+    animation-delay: 0s;
+}
+
+.module-2 .module-circle {
+    animation-delay: 0.4s;
+}
+
+.module-3 .module-circle {
+    animation-delay: 0.8s;
+}
+
+.module-4 .module-circle {
+    animation-delay: 1.2s;
+}
+
+.module-5 .module-circle {
+    animation-delay: 1.6s;
+}
+
+@keyframes floatCircle {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-10px) scale(1.02);
+    }
+}
+
+.module-circle:hover,
+.module-node:hover .module-circle,
+.module-node.is-active .module-circle {
+    transform: scale(1.2) translateY(-5px) !important;
+    box-shadow:
+        0 20px 60px rgba(255, 20, 147, 0.7),
+        0 0 60px rgba(255, 105, 180, 0.5),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.8);
+    animation: none !important;
+}
+
+.module-number {
+    font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+    font-weight: 900;
+    display: block;
+    margin-bottom: 0.1rem;
+}
+
+.module-label {
+    font-size: clamp(0.5rem, 0.8vw, 0.65rem);
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.15;
+    padding: 0 0.3rem;
+}
+
+/* Details Panel - Premium Glass Card - COMPACT */
+.module-details {
+    position: absolute;
+    background: linear-gradient(135deg,
+            color-mix(in srgb, var(--color-bg) 95%, var(--color-accent-2)),
+            color-mix(in srgb, var(--color-bg) 90%, transparent));
+    border: 2px solid color-mix(in srgb, var(--color-accent-2) 50%, transparent);
+    border-radius: 0.8rem;
+    padding: 0.8rem 1rem;
+    max-width: 200px;
+    min-width: 160px;
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(255, 20, 147, 0.2);
+    z-index: 25;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    /* Hidden state */
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.85) translateY(10px);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+/* Show details on hover */
+.module-node:hover .module-details,
+.module-node:focus-within .module-details,
+.module-node.is-active .module-details {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+}
+
+.module-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.module-details li {
+    font-size: 0.7rem;
+    line-height: 1.4;
+    margin-bottom: 0.4rem;
+    padding-left: 1rem;
+    position: relative;
+    color: var(--color-text);
+}
+
+.module-details li:last-child {
+    margin-bottom: 0;
+}
+
+.module-details li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-2);
+    font-weight: 900;
+    font-size: 1rem;
+}
+
+/* ==================== ORBITAL POSITIONING - TIGHTER LAYOUT ==================== */
+
+/* Module 1 - Top Center - Details appear ABOVE to avoid overlap */
+.module-1 {
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.module-1 .module-details {
+    bottom: calc(100% + 15px);
+    /* Position ABOVE */
+    left: 50%;
+    top: auto;
+    right: auto;
+    transform: translateX(-50%) scale(0.85);
+}
+
+.module-1:hover .module-details,
+.module-1.is-active .module-details {
+    transform: translateX(-50%) scale(1);
+}
+
+/* Module 2 - Right side (upper) - CLOSER */
+.module-2 {
+    top: 28%;
+    right: 15%;
+}
+
+.module-2 .module-details {
+    top: 50%;
+    left: calc(100% + 12px);
+    right: auto;
+    transform: translateY(-50%) scale(0.85);
+}
+
+.module-2:hover .module-details,
+.module-2.is-active .module-details {
+    transform: translateY(-50%) scale(1);
+}
+
+/* Module 3 - Right side (lower) - CLOSER */
+.module-3 {
+    bottom: 12%;
+    right: 15%;
+}
+
+.module-3 .module-details {
+    top: 50%;
+    left: calc(100% + 12px);
+    right: auto;
+    bottom: auto;
+    transform: translateY(-50%) scale(0.85);
+}
+
+.module-3:hover .module-details,
+.module-3.is-active .module-details {
+    transform: translateY(-50%) scale(1);
+}
+
+/* Module 4 - Left side (lower) - CLOSER */
+.module-4 {
+    bottom: 12%;
+    left: 15%;
+}
+
+.module-4 .module-details {
+    top: 50%;
+    right: calc(100% + 12px);
+    left: auto;
+    bottom: auto;
+    transform: translateY(-50%) scale(0.85);
+}
+
+.module-4:hover .module-details,
+.module-4.is-active .module-details {
+    transform: translateY(-50%) scale(1);
+}
+
+/* Module 5 - Left side (upper) - CLOSER */
+.module-5 {
+    top: 28%;
+    left: 15%;
+}
+
+.module-5 .module-details {
+    top: 50%;
+    right: calc(100% + 12px);
+    left: auto;
+    transform: translateY(-50%) scale(0.85);
+}
+
+.module-5:hover .module-details,
+.module-5.is-active .module-details {
+    transform: translateY(-50%) scale(1);
+}
+
+/* Connecting Lines to Center */
+.module-node::before {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 80px;
+    background: linear-gradient(to bottom,
+            rgba(255, 20, 147, 0.8),
+            rgba(255, 20, 147, 0.1));
+    border-radius: 3px;
+    z-index: -1;
+    opacity: 0.5;
+    transition: opacity 0.3s ease, height 0.3s ease;
+}
+
+.module-1::before {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100px;
+}
+
+.module-2::before {
+    top: 50%;
+    left: -60px;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(to left, rgba(255, 20, 147, 0.8), rgba(255, 20, 147, 0.1));
+}
+
+.module-3::before {
+    bottom: 50%;
+    left: -50px;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(to left, rgba(255, 20, 147, 0.8), rgba(255, 20, 147, 0.1));
+}
+
+.module-4::before {
+    bottom: 50%;
+    right: -50px;
+    left: auto;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(to right, rgba(255, 20, 147, 0.8), rgba(255, 20, 147, 0.1));
+}
+
+.module-5::before {
+    top: 50%;
+    right: -60px;
+    left: auto;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(to right, rgba(255, 20, 147, 0.8), rgba(255, 20, 147, 0.1));
+}
+
+.module-node:hover::before {
+    opacity: 1;
+}
+
+/* Remove old ::after lines */
+.module-node::after {
+    display: none;
+}
+
+/*==================== FLOWCHART STYLES ====================*/
+.flowchart-section {
+    margin: 4rem auto;
+    max-width: 600px;
+}
+
+.flowchart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 2rem 1rem;
+}
+
+.flow-node {
+    font-weight: 900;
+    font-size: clamp(1rem, 1.4vw, 1.3rem);
+    padding: 1rem 2.5rem;
+    border-radius: 50%;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.flow-start {
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    width: clamp(120px, 20vw, 160px);
+    height: clamp(60px, 10vw, 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 80px;
+}
+
+.flow-end {
+    background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent-light));
+    color: white;
+    width: clamp(100px, 18vw, 140px);
+    height: clamp(100px, 18vw, 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.flow-step {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.flow-box {
+    background: linear-gradient(135deg,
+            color-mix(in srgb, #10B981 15%, var(--color-surface)),
+            color-mix(in srgb, #10B981 8%, var(--color-surface)));
+    border: 2px solid color-mix(in srgb, #10B981 40%, transparent);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.5rem;
+    font-weight: 700;
+    font-size: clamp(0.9rem, 1.1vw, 1rem);
+    color: var(--color-text);
+    box-shadow: var(--shadow-sm);
+    min-width: 160px;
+    text-align: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.flow-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+    border-color: #10B981;
+}
+
+.flow-description {
+    flex: 1;
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    color: var(--color-muted);
+    line-height: 1.5;
+    text-align: left;
+}
+
+.flow-arrow {
+    width: 2px;
+    height: 30px;
+    background: linear-gradient(to bottom, var(--color-accent-2), var(--color-accent-light));
+    margin: 0.5rem auto;
+    position: relative;
+}
+
+.flow-arrow::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--color-accent-light);
+}
+
+/*==================== INFO CARDS GRID ====================*/
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 3rem auto;
+    max-width: 1200px;
+}
+
+.info-card {
+    background: linear-gradient(135deg,
+            color-mix(in srgb, var(--color-surface) 98%, var(--color-accent-2)),
+            var(--color-surface));
+    border: 2px solid color-mix(in srgb, var(--color-accent-2) 20%, var(--color-border));
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-glow), var(--shadow-md);
+    border-color: var(--color-accent-2);
+}
+
+.info-card h4 {
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+    color: var(--color-accent-2);
+}
+
+.info-card p {
+    margin-bottom: 0.8rem;
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+.info-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-card li {
+    margin-bottom: 0.7rem;
+    padding-left: 1.2rem;
+    position: relative;
+    color: var(--color-text);
+    line-height: 1.5;
+}
+
+.info-card li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-2);
+    font-weight: 900;
+}
+
+.info-card li strong {
+    color: var(--color-accent-2);
+    font-weight: 700;
+}
+
+/*==================== RESPONSIVE - LARGE SCREENS (TV/Monitor) ====================*/
+@media (min-width: 1440px) {
+    .modules-diagram {
+        max-width: 850px;
+        min-height: 550px;
+    }
+
+    .module-circle {
+        width: 100px;
+        height: 100px;
+    }
+
+    .module-number {
+        font-size: 2rem;
+    }
+
+    .module-label {
+        font-size: 0.75rem;
+    }
+
+    .module-details {
+        max-width: 240px;
+        min-width: 200px;
+        padding: 1rem 1.2rem;
+    }
+
+    .module-details li {
+        font-size: 0.8rem;
+    }
+
+    .modules-center {
+        padding: 1.5rem 2.5rem;
+        font-size: 1.1rem;
+    }
+}
+
+/*==================== RESPONSIVE - TABLET (landscape) ====================*/
+@media (max-width: 1024px) {
+    .modules-diagram {
+        min-height: 450px;
+        max-width: 650px;
+    }
+
+    .module-circle {
+        width: 75px;
+        height: 75px;
+    }
+
+    .module-number {
+        font-size: 1.3rem;
+    }
+
+    .module-label {
+        font-size: 0.55rem;
+    }
+
+    .module-details {
+        max-width: 180px;
+        min-width: 150px;
+        padding: 0.7rem 0.9rem;
+    }
+
+    .module-details li {
+        font-size: 0.65rem;
+    }
+
+    .modules-center {
+        padding: 0.9rem 1.3rem;
+        font-size: 0.7rem;
+    }
+
+    /* Adjust positions for tablet */
+    .module-1 {
+        top: 3%;
+    }
+
+    .module-2,
+    .module-5 {
+        top: 28%;
+    }
+
+    .module-3,
+    .module-4 {
+        bottom: 12%;
+    }
+
+    .module-2,
+    .module-3 {
+        right: 5%;
+    }
+
+    .module-4,
+    .module-5 {
+        left: 5%;
+    }
+}
+
+/*==================== RESPONSIVE - TABLET (portrait) ====================*/
+@media (max-width: 900px) {
+    .modules-diagram {
+        min-height: 400px;
+        max-width: 550px;
+    }
+
+    .module-circle {
+        width: 65px;
+        height: 65px;
+    }
+
+    .module-number {
+        font-size: 1.2rem;
+    }
+
+    .module-label {
+        font-size: 0.5rem;
+    }
+
+    .module-details {
+        max-width: 160px;
+        min-width: 130px;
+        padding: 0.6rem 0.8rem;
+    }
+
+    .module-details li {
+        font-size: 0.6rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .modules-center {
+        padding: 0.8rem 1.1rem;
+        font-size: 0.65rem;
+    }
+}
+
+/*==================== RESPONSIVE - MOBILE ====================*/
+@media (max-width: 768px) {
+    .system-modules {
+        padding: 1rem;
+    }
+
+    .modules-diagram {
+        height: auto;
+        min-height: auto;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 0;
+        max-width: 100%;
+    }
+
+    .modules-center {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        margin-bottom: 1rem;
+        width: 100%;
+        max-width: 250px;
+        padding: 1rem 1.5rem;
+        font-size: 0.8rem;
+    }
+
+    .module-node {
+        position: relative;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        flex-direction: row;
+        gap: 0.8rem;
+        width: 100%;
+        max-width: 100%;
+        padding: 0.8rem;
+        background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+        border-radius: 0.8rem;
+        border: 1px solid color-mix(in srgb, var(--color-accent-2) 20%, transparent);
+    }
+
+    .module-node::before {
+        display: none;
+    }
+
+    .module-circle {
+        width: 60px;
+        height: 60px;
+        flex-shrink: 0;
+        animation: none !important;
+    }
+
+    .module-number {
+        font-size: 1.3rem;
+    }
+
+    .module-label {
+        font-size: 0.5rem;
+    }
+
+    .module-circle:hover,
+    .module-node:hover .module-circle {
+        transform: scale(1.05) !important;
+    }
+
+    .module-details {
+        position: relative;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        margin: 0 !important;
+        max-width: none;
+        min-width: auto;
+        flex: 1;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        backdrop-filter: none;
+
+        /* Always visible on mobile */
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .module-details li {
+        font-size: 0.75rem;
+    }
+
+    .flow-step {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .flow-description {
+        text-align: center;
+    }
+
+    .section-title,
+    .flowchart-title {
+        font-size: 1.1rem;
+        padding: 0.5rem 0.9rem;
+    }
+
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/*==================== RESPONSIVE - SMALL MOBILE ====================*/
+@media (max-width: 480px) {
+    .module-node {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .module-circle {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 0.5rem;
+    }
+
+    .module-number {
+        font-size: 1.4rem;
+    }
+
+    .module-label {
+        font-size: 0.55rem;
+    }
+
+    .module-details {
+        text-align: left;
+    }
+
+    .module-details li {
+        font-size: 0.7rem;
+    }
+
+    .modules-center {
+        font-size: 0.75rem;
+        padding: 0.9rem 1.2rem;
+        max-width: 200px;
+    }
+}
